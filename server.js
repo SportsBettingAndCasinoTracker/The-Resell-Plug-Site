@@ -470,18 +470,7 @@ app.post("/api/paypal/capture-order", async (req, res) => {
 
     const vendor = findVendor(updated.vendor_id);
 
-    if (vendor && !updated.email_sent) {
-      try {
-        const sent = await sendDeliveryEmail(updated, vendor);
-        if (sent) {
-          markEmailSent(updated.id);
-        }
-      } catch (mailError) {
-        console.error("Email delivery failed:", mailError.message);
-      }
-    }
-
-    return res.json({
+    const responsePayload = {
       ok: true,
       order: {
         vendorId: updated.vendor_id,
@@ -494,7 +483,24 @@ app.post("/api/paypal/capture-order", async (req, res) => {
         verified: Boolean(updated.verified),
         downloadUrl: `${env.siteUrl}/download/${updated.download_token}`
       }
-    });
+    };
+
+    // Return success to the browser first so PayPal popup can close immediately.
+    res.json(responsePayload);
+
+    if (vendor && !updated.email_sent) {
+      sendDeliveryEmail(updated, vendor)
+        .then((sent) => {
+          if (sent) {
+            markEmailSent(updated.id);
+          }
+        })
+        .catch((mailError) => {
+          console.error("Email delivery failed:", mailError.message);
+        });
+    }
+
+    return;
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

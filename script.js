@@ -198,7 +198,10 @@ async function renderCheckoutSummary() {
         label: "paypal"
       },
       createOrder: () => createServerOrder(),
-      onApprove: (data) => captureServerOrder(data.orderID, "PayPal"),
+      onApprove: (data) =>
+        captureServerOrder(data.orderID, "PayPal").catch((error) => {
+          safeNote(error.message || "Payment captured, but confirmation failed. Please contact support.");
+        }),
       onError: (error) => {
         safeNote(error.message || "Payment failed. Please retry.");
       }
@@ -217,7 +220,10 @@ async function renderCheckoutSummary() {
         label: "pay"
       },
       createOrder: () => createServerOrder(),
-      onApprove: (data) => captureServerOrder(data.orderID, "PayPal Card"),
+      onApprove: (data) =>
+        captureServerOrder(data.orderID, "PayPal Card").catch((error) => {
+          safeNote(error.message || "Payment captured, but confirmation failed. Please contact support.");
+        }),
       onError: (error) => {
         safeNote(error.message || "Card payment failed. Try another funding method.");
       }

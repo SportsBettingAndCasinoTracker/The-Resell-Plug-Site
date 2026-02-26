@@ -422,13 +422,33 @@ app.post("/api/paypal/capture-order", async (req, res) => {
       return res.status(400).json({ error: "orderID is required." });
     }
 
-    const existing = getOrderByPayPalOrderId(orderID);
-    if (!existing) {
-      return res.status(404).json({ error: "Order not found in database." });
-    }
-
     const accessToken = await getPayPalAccessToken();
     const capture = await paypalRequest(`/v2/checkout/orders/${orderID}/capture`, "POST", accessToken, {});
+    let existing = getOrderByPayPalOrderId(orderID);
+
+    if (!existing) {
+      const fallbackVendorId = capture.purchase_units?.[0]?.custom_id;
+      const fallbackVendor = findVendor(fallbackVendorId) || vendors[0];
+      const fallbackBuyerEmail = capture.payer?.email_address || "customer@example.com";
+      const fallbackAmount =
+        capture.purchase_units?.[0]?.payments?.captures?.[0]?.amount?.value ||
+        capture.purchase_units?.[0]?.amount?.value ||
+        String(fallbackVendor.price);
+      const fallbackCurrency =
+        capture.purchase_units?.[0]?.payments?.captures?.[0]?.amount?.currency_code ||
+        capture.purchase_units?.[0]?.amount?.currency_code ||
+        "USD";
+
+      upsertCreatedOrder({
+        paypalOrderId: orderID,
+        vendor: fallbackVendor,
+        buyerEmail: fallbackBuyerEmail,
+        amount: String(fallbackAmount),
+        currency: fallbackCurrency
+      });
+
+      existing = getOrderByPayPalOrderId(orderID);
+    }
 
     const captureId =
       capture.purchase_units?.[0]?.payments?.captures?.[0]?.id || capture.id || `CAP-${Date.now()}`;
@@ -444,6 +464,10 @@ app.post("/api/paypal/capture-order", async (req, res) => {
     });
 
     const updated = getOrderByPayPalOrderId(orderID);
+    if (!updated) {
+      return res.status(500).json({ error: "Failed to finalize captured order." });
+    }
+
     const vendor = findVendor(updated.vendor_id);
 
     if (vendor && !updated.email_sent) {

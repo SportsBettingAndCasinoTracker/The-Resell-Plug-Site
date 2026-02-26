@@ -1,0 +1,17 @@
+{
+  "name": "theresellplug",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TheResellPlug ecommerce with PayPal verification, webhook handling, email delivery, and admin dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemailer": "^6.10.0"
+  }
+}

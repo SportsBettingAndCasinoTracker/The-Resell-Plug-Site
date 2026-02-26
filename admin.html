@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orders Dashboard | TheResellPlug</title>
+    <meta name="description" content="Private order tracking dashboard for TheResellPlug." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-noise"></div>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a href="index.html" class="brand">TheResellPlug</a>
+        <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
+        <nav class="nav">
+          <a href="index.html">Home</a>
+          <a href="all-vendors.html">All Vendors</a>
+          <a href="about.html">About</a>
+          <a href="faq.html">FAQ</a>
+          <a href="contact.html">Contact</a>
+          <a href="admin.html" class="active">Dashboard</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-main reveal">
+      <section class="section">
+        <div class="container">
+          <h1>Orders Dashboard</h1>
+          <p class="page-sub">Track paid orders, verification status, and email delivery.</p>
+
+          <div class="card admin-auth">
+            <label>
+              Admin Token
+              <input id="admin-token" type="password" placeholder="Enter ADMIN_DASH_TOKEN" />
+            </label>
+            <button id="load-orders" class="btn btn-primary" type="button">Load Orders</button>
+            <p id="admin-note" class="small"></p>
+          </div>
+
+          <div class="card admin-table-wrap">
+            <table class="admin-table" id="orders-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Order</th>
+                  <th>Email</th>
+                  <th>Product</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Verified</th>
+                  <th>Email Sent</th>
+                  <th>Created</th>
+                </tr>
+              </thead>
+              <tbody id="orders-body">
+                <tr>
+                  <td colspan="9">Enter your admin token and load orders.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-wrap">
+        <p>© <span id="year"></span> TheResellPlug. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="vendors.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

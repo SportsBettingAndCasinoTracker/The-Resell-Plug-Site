@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout | TheResellPlug</title>
+    <meta name="description" content="Secure checkout for digital vendor products." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-noise"></div>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a href="index.html" class="brand">TheResellPlug</a>
+        <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
+        <nav class="nav">
+          <a href="index.html">Home</a>
+          <a href="all-vendors.html">All Vendors</a>
+          <a href="about.html">About</a>
+          <a href="faq.html">FAQ</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-main reveal">
+      <section class="section">
+        <div class="container checkout-layout">
+          <div>
+            <h1>Secure Checkout</h1>
+            <p class="page-sub">Pay securely with PayPal. Digital delivery is instant after completed payment.</p>
+            <form id="checkout-form" class="form card">
+              <label>
+                Email (for delivery)
+                <input id="buyer-email" type="email" required placeholder="you@example.com" />
+              </label>
+              <div class="pay-options">
+                <p class="small pay-label">Pay with PayPal</p>
+                <div id="paypal-button-container"></div>
+                <p class="small pay-label">Pay with Debit/Credit</p>
+                <div id="card-button-container"></div>
+              </div>
+              <p class="small" id="paypal-note">
+                Loading secure checkout...
+              </p>
+              <p class="small">By purchasing, you agree this is a digital product. No physical item will ship.</p>
+            </form>
+          </div>
+
+          <aside id="checkout-summary" class="card checkout-summary"></aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-wrap">
+        <p>© <span id="year"></span> TheResellPlug. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="vendors.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
